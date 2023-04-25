@@ -133,6 +133,7 @@ jobs:
             npm install
             npm audit --audit-level=critical --force
             npm audit fix --force
+            npm audit --audit-level=critical
             exit 0
 
   deploy-infrastructure:
