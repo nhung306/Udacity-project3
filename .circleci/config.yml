@@ -178,7 +178,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["20:79:9a:c1:52:51:6c:26:ea:a6:88:02:1d:3d:d1:52"]
+          fingerprints: ["5a:b4:88:7b:bb:dd:40:76:21:67:d2:08:3b:6a:2a:23"]
       - attach_workspace:
           at: ~/
       - run:
@@ -260,7 +260,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["20:79:9a:c1:52:51:6c:26:ea:a6:88:02:1d:3d:d1:52"]
+          fingerprints: ["5a:b4:88:7b:bb:dd:40:76:21:67:d2:08:3b:6a:2a:23"]
       - run:
           name: Install tar utility
           command: |
