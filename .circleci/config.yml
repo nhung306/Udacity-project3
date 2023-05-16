@@ -164,7 +164,16 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             echo [web] > ~/inventory.txt
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/inventory.txt
+            # aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/inventory.txt
+
+            BACKEND_AWS_PUBLIC_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text)
+            # echo "http://$BACKEND_AWS_PUBLIC_IP:3030" >> .circleci/outputs/backend_url.txt
+            # echo "[all]" >> .circleci/ansible/inventory.txt
+            echo "$BACKEND_AWS_PUBLIC_IP" >> ~/inventory.txt
+            # cat .circleci/outputs/backend_url.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -175,6 +184,17 @@ jobs:
   configure-infrastructure:
     docker:
       - image: python:3.8.13-alpine3.15
+        environment:
+          NODE_ENV: "production"
+          VERSION: "1"
+          ENVIRONMENT: "production"
+          TYPEORM_CONNECTION: $TYPEORM_CONNECTION
+          TYPEORM_HOST: $TYPEORM_HOST
+          TYPEORM_USERNAME: $TYPEORM_USERNAME
+          TYPEORM_PASSWORD: $TYPEORM_PASSWORD
+          TYPEORM_DATABASE: $TYPEORM_DATABASE
+          TYPEORM_PORT: $TYPEORM_PORT
+          TYPEORM_ENTITIES: $TYPEORM_ENTITIES
     steps:
       - checkout
       - add_ssh_keys:
@@ -183,11 +203,16 @@ jobs:
           at: ~/
       - run:
           name: Install dependencies
-          command: |
+          command:  |
+            apk add curl
+            apk add --upgrade bash
             apk add --update ansible
+            apk add openssh-client
+            pip3 install awscli
       - run:
           name: Configure server
           command: |
+            export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i ~/inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure      
 
