@@ -291,7 +291,7 @@ jobs:
           name: Install tar utility
           command: |
             apt update
-            apt install tar gzip
+            apt install tar gzip rsync
       - attach_workspace:
           at: ~/
       - restore_cache:
