@@ -137,6 +137,7 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
+          debug: 1
 
   deploy-infrastructure:
     docker:
