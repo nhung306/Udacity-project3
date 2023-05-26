@@ -244,7 +244,7 @@ jobs:
       - run:
           name: Sending migration status to kvdb
           command: |
-            if grep -q "has been executed successfully"  ./backend/migrations_dump.txt   
+            if grep -q "has been executed successfully\|No migrations are pending" ./backend/migrations_dump.txt   
             then
               curl -k https://kvdb.io/${KVDB_BUCKET_ID}/migration_${CIRCLE_WORKFLOW_ID:0:7} \
                 -u "${KVDB_SECRET_KEY}:" \
