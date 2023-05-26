@@ -1,5 +1,5 @@
 URL01: https://github.com/nhung306/udacity-project3
-URL02: http://udapeople-256c6f9.s3-website-us-east-1.amazonaws.com/
+URL02: http://udapeople-ae3d8db.s3-website-us-east-1.amazonaws.com/
 
 Cloudfront endpoint: d1ufye1ji6yv1b.cloudfront.net
 Prometheus endpoint: http://ec2-3-82-117-41.compute-1.amazonaws.com:9090/targets
